@@ -1,0 +1,10 @@
+data1 = [-10, -21, -4, -45, -66, 93, 11, -4, -6, 12, 11, 4]
+
+count = 0
+for i in data1:
+    if i > 0:
+        count += 1
+
+list = [count, len(data1) - count]
+
+print(list)

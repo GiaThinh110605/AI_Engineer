@@ -1,0 +1,16 @@
+# Ex2: Given a list, extract all elements whose frequency is greater than k.
+data2 = [4, 6, 4, 3, 3, 4, 3, 4, 3, 8]
+k = 3
+
+list = []
+data2.sort()
+count = 1
+for i in range(len(data2) - 1):
+    if data2[i + 1] == data2[i]:
+        count += 1
+    else:
+        if (count >= k):
+            list.append(data2[i])
+        count = 1
+
+print(list)

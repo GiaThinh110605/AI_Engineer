@@ -33,3 +33,14 @@ https://www.youtube.com/watch?v=Dbvd-zaqJnQ&list=PL-DKonjOZsHZJ3PCSLE3fE9sFMZ_zW
 ## Đánh giá mô hình:
 - Loss: đo lường hiệu suất của mô hình (trong quá trình huấn luyện)
 - Metric: đo lường hiệu suất của mô hình(sau khi huấn luyện)
+
+### Supervised learning:
+#### Đánh giá mô hình hồi quy:
+- mean squared errror(MSE) = (1/n) * sum((y_pred - y_true)^2) (dùng khi có outliers)
+- mean absolute error(MAE) = (1/n) * sum(abs(y_pred - y_true)) (dùng khi không có outliers)
+- R-squared (R²) = 1 - (sum((y_true - y_pred)^2) / sum((y_true - mean(y_true))^2)) (Muốn biết mô hình giải thích được bao nhiêu % sự biến động của dữ liệu)
+
+#### Đánh giá mô hình phân loại:
+- Softmax = exp(z_i) / sum(exp(z_j)) (dùng để đổi thành xác xuất, để tránh kết quả âm)
+- Vector one-hot: là một vector có tất cả phần tử bằng 0 ngoại trừ một phần tử duy nhất bằng 1, được sử dụng để biểu diễn các lớp trong mô hình phân loại đa lớp.
+- Cross-entropy loss = -sum(y_true * log(y_pred)) (dùng để đo lường hiệu suất của mô hình phân loại)
