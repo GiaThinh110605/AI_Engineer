@@ -1,19 +1,3 @@
-THÔNG BÁO TUYỂN DỤNG
-AI INTERN – LLM DATA PROCESSING & TRAINING
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-THÔNG TIN VỊ TRÍ
-
-Vị trí:              AI Intern – LLM Data Processing & Training
-Số lượng:            5
-Hình thức:           Part-time / Full-time (6-8h/ngày, tối thiểu 4 ngày/tuần)
-Thời gian thực tập:  3 tháng
-Địa điểm:            TP. Hồ Chí Minh 
-Phụ cấp:             2-4 triệu/Tháng
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
 MÔ TẢ CÔNG VIỆC
 
 Thực tập sinh sẽ là người trực tiếp xử lý dữ liệu và hỗ trợ quy trình training LLM, bao gồm:
