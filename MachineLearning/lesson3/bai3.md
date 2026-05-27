@@ -1,6 +1,6 @@
 https://www.youtube.com/watch?v=bpK8oQyaVJE&list=PL-DKonjOZsHZJ3PCSLE3fE9sFMZ_zWkXO&index=7
 
-### Bài toàn binary Classification: có 2 lớp
+### Bài toán binary Classification: có 2 lớp
 + balanced dataset, unbalanced dataset
 + thông thường trong thực tế quan tâm là class ít hơn
 
