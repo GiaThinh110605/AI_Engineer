@@ -20,5 +20,11 @@ Quy trình xây dựng mô hình machine learning:
         + x_new = (x - mean) / std -> đưa về dải có mean = 0, std = 1 (rất ít bị ảnh hưởng bởi outliers)
     + xử lý categorical features: 
         + ordinal features: (ví dụ: s, m, l -> 1, 2, 3)
-        + one-hot encoding
-        + label encoding
+        + nominal features: one-hot encoding (ví dụ: màu sắc -> đỏ, xanh, vàng -> 100, 010, 001)
+        + word embedding: là vector biểu diễn từ ngữ trong không gian nhiều chiều, giúp máy tính hiểu được ngữ nghĩa của từ ngữ đó (ví dụ: word2vec, GloVe, FastText)
+    + correlation: rxy = cov(x,y) / (std(x) * std(y)) [-1, 1]
+        - rxy > 0: x và y có mối quan hệ thuận
+        - rxy < 0: x và y có mối quan hệ nghịch
+        - rxy = 0: x và y không có mối quan hệ tuyến tính
+    => vì correlation cao(> 0.7, < -0.7) là bậc 1 -> sử dụng các thuật toán đơn giản, để chạy nhanh
+    + collinearity: 
