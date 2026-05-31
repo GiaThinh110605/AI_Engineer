@@ -27,4 +27,4 @@ Quy trình xây dựng mô hình machine learning:
         - rxy < 0: x và y có mối quan hệ nghịch
         - rxy = 0: x và y không có mối quan hệ tuyến tính
     => vì correlation cao(> 0.7, < -0.7) là bậc 1 -> sử dụng các thuật toán đơn giản, để chạy nhanh
-    + collinearity: 
+    + collinearity: khi có 2 features có correlation cao với nhau thì sẽ gây ra hiện tượng collinearity, làm cho mô hình khó học được mối quan hệ giữa features và target, dẫn đến overfitting, vì vậy cần phải loại bỏ một trong hai features đó đi.
