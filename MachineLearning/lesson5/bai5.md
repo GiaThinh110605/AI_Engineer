@@ -29,3 +29,8 @@ Thuật toán quá phức tạp nhưng dữ liệu quá đơn giản -> overfitt
 y = 1 / (1 + exp(-(w1*x1 + w2*x2 + ... + wn*xn + b)))
 
 là output của linear regression, sau đó đưa qua hàm sigmoid để chuyển đổi thành xác xuất [0, 1]
+
+- Naive Bayes: dựa trên định lý Bayes, giả định rằng các đặc trưng là độc lập với nhau
+P(A|B) = P(B|A) * P(A) / P(B)
+
+- Decision Tree: mô hình cây quyết định, phân chia dữ liệu dựa trên các điều kiện (điều kiện dừng theo độ sâu của cây hoặc số lượng mẫu trong node)
