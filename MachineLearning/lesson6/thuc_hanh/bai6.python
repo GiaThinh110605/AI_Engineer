@@ -1,0 +1,6 @@
+import pandas as pd
+from data_profiling import ProfileReport
+
+df = pd.read_csv("/Users/mac/Downloads/AI_Engineer/MachineLearning/lesson6/thuc_hanh/diabetes.csv")
+profile = ProfileReport(df, title="Diabetes Dataset")
+profile.to_file("output.html")
