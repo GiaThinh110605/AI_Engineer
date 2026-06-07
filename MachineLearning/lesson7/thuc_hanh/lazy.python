@@ -1,0 +1,28 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, recall_score, f1_score, precision_score, classification_report, confusion_matrix
+from sklearn.ensemble import RandomForestClassifier
+from lazypredict.Supervised import LazyClassifier
+import pickle
+import inspect
+print(inspect.getsource(LazyClassifier))
+
+df = pd.read_csv("/Users/mac/Downloads/AI_Engineer/MachineLearning/lesson7/thuc_hanh/diabetes.csv")
+
+target = "Outcome"
+X = df.drop(target, axis=1) # chỉ ra index: hàng cần xóa, chỉ ra cột: cột cần xóa, axis=0 thì bỏ theo hàng, axis=1 bỏ theo cột
+
+y = df[target] 
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+# random_state giúp cố định bộ train, test qua từng lần chia, để biết được mô hình tốt hơn, tiền xử lý dữ liệu
+# tốt hơn... Nếu không có thì bộ test sẽ không cố định nên không biết cái gì là tốt hơn
+# mô hình liên quan đến cây thì nó không quan tâm đến xử lý số, vì nó chỉ là luật chọn ngưỡng mà phân lớp
+clf = LazyClassifier(verbose=0, ignore_warnings=True, custom_metric=None)
+models, predictions = clf.fit(X_train, X_test, y_train, y_test)
+print(models)
+
+
+
