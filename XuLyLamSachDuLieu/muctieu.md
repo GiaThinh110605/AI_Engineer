@@ -1,7 +1,0 @@
-- 1. Load dữ liệu
-- 2. Làm sạch dữ liệu
-- 3. Chuẩn hóa text
-- 4. Deduplicate
-- 5. Label / annotation
-- 6. QA/QC
-- 7. Export thành format SFT
