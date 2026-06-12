@@ -16,3 +16,8 @@ https://www.youtube.com/watch?v=PCxrXeWE3kU&list=PL-DKonjOZsHYAnadxsrdwd4VkWKEHf
 - tốn ít tham số hơn nhưng vẫn tăng được receptive field
 - ví dụ: 3x3 nhưng áp vào input 5x5 thì những điểm không được áp thì = 0
 
+# Bình thường thì nên tận dụng tất cả mô hình có sẵn để huấn luyện
+- sử dụng transfer learning hoặc fine tuning để làm model học nhanh hơn
+
+# Những trường hợp không sử dụng được cả kiến trúc và weight có sẵn
+- kích thước rất là bé so với kích thước có sẵn của mô hình -> mô hình có sẵn tốn nhiều tài nguyên -> do đó mình tự code model kiến trúc mới
