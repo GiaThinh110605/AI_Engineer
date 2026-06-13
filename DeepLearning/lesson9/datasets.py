@@ -11,6 +11,47 @@ from torchvision.transforms import Resize, ToTensor, Compose
 from PIL import Image
 
 
+class MyAnimals(Dataset):
+    def __init__(self, data_path, transform=None):
+        self.images = []
+        self.labels = []
+        self.categories = []
+        for category_id, folder_name in enumerate(os.listdir(data_path)):
+            self.categories.append(folder_name)
+            for image_name in os.listdir(os.path.join(data_path, folder_name)):
+                image_path = os.path.join(data_path, folder_name, image_name)
+                self.images.append(image_path)
+                self.labels.append(category_id)
+        self.transform = transform
+
+
+    def __len__(self):
+        return len(self.labels)
+
+    def __getitem__(self, index):
+        image_path = self.images[index]
+        image = cv2.imread(image_path)
+        # image = Image.open(image_path).convert("RGB")
+        if self.transform:
+            image = self.transform(image)
+        label = self.labels[index]
+        return image, label
+
+
+
+
+# if __name__ == "__main__":
+#     transform = Compose([
+#         ToTensor(),
+#         Resize((224, 224))
+#     ])
+#     dataset = MyAnimals(data_path="/Users/mac/Downloads/AI_Engineer/Dataset/animals/train", transform=transform)
+#     dataloader = DataLoader(dataset, batch_size=8, shuffle=True, drop_last=True)
+#     for images, labels in dataloader:
+#         print(images.shape)
+#         print(labels)
+
+
 class Cifar10(Dataset):
     def __init__(self, data_path, is_train=True, transform=None):
         self.images = []
@@ -31,7 +72,6 @@ class Cifar10(Dataset):
 
     def __getitem__(self, index):
         image_array = self.images[index]
-        # Reshape CIFAR-10 data from (3072,) to (3, 32, 32) then to (32, 32, 3)
         image_array = np.reshape(image_array, (3, 32, 32))
         image_array = np.transpose(image_array, (1, 2, 0))
         # Convert to PIL Image for transforms
