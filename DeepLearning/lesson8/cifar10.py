@@ -1,6 +1,6 @@
 # from torchvision.datasets import CIFAR10
 
-# dataset = CIFAR10("/Users/mac/Downloads/AI_Engineer/Dataset", train=True, download=True)
+# dataset = CIFAR10("../../Dataset/", train=True, download=True)
 import os
 from torch.utils.data import Dataset
 import pickle

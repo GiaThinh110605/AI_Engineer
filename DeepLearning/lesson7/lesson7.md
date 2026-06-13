@@ -21,3 +21,15 @@ https://www.youtube.com/watch?v=PCxrXeWE3kU&list=PL-DKonjOZsHYAnadxsrdwd4VkWKEHf
 
 # Những trường hợp không sử dụng được cả kiến trúc và weight có sẵn
 - kích thước rất là bé so với kích thước có sẵn của mô hình -> mô hình có sẵn tốn nhiều tài nguyên -> do đó mình tự code model kiến trúc mới
+
+# Làm thế nào để thiết kế kiến trúc CNN:
+- Rule 1: Sử dụng những cái có sẵn trước.
+- Rule 2: Nếu rule 1 không làm được, cân nhắc câu hỏi:
+        - Mô hình nên có bao nhiêu layer?
+        - Mỗi layer nên có parameter như thế nào?
+            - Convolutional có bao nhiêu channel? Kernel size là bao nhiêu?
+            - Nên dùng activation function gì?
+            - Pooling nên có kernel size là bao nhiêu?
+            - Nên flatten feature map ở đâu?
+            - Nên có bao nhiêu fully connected layer?
+            - Có nên dùng Batchnorm, Dropout,...?
