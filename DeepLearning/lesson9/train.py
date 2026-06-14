@@ -5,11 +5,12 @@ from torch.utils.data import DataLoader
 import torch.nn as nn
 import torch.optim as optim
 import torch 
+from tqdm.autonotebook import tqdm
 
 def train():
     image_size=224
     lr=1e-3
-    batch_size=8
+    batch_size=32
     momentum = 0.9
     num_epochs = 100
     
@@ -33,11 +34,12 @@ def train():
     print(criterion)
     print(optimizer)
 
-
+    # hàm enumerate() nó giúp giữ được index
 
     for epoch in range(num_epochs):
         model.train()
-        for images, labels in train_dataloader:
+        progress_bar = tqdm(train_dataloader, colour="cyan")
+        for i, (images, labels) in enumerate(progress_bar):
             images = images.to(device)
             labels = labels.to(device)
             # forward pass
@@ -48,9 +50,21 @@ def train():
             optimizer.zero_grad() 
             loss.backward()
             optimizer.step()
+            progress_bar.set_description("epoch {}/{}. loss: {:.4f}".format(epoch+1, num_epochs, loss.item()))
 
-            print(loss.item())
-
+    # validation mode
+    model.eval()
+    progress_bar = tqdm(train_dataloader, colour="cyan")
+    for i, (images, labels) in enumerate(progress_bar):
+        images = images.to(device)
+        labels = labels.to(device)
+        # forward pass
+        output = model(images)
+        loss = criterion(output, labels)
+        with torch.no_grad():
+            output = model(images) 
+        loss = criterion(output, labels)
+        
 
 if __name__ == "__main__":
     train()
