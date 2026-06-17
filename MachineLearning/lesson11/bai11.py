@@ -9,6 +9,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.feature_selection import SelectKBest, chi2, SelectPercentile
+from imblearn.over_sampling import SMOTEN
 import re
 
 # Tiền xử lý:
@@ -46,6 +47,15 @@ x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 print(y_train.value_counts())
 
 print(data.info())
+
+sampler = SMOTEN(random_state=42, k_neighbors=2, sampling_strategy={
+    "bereichsleiter": 1000,
+    "specialist": 500,
+    "director_business_unit_leader": 500,
+    "managing_director_small_medium_company": 500
+})
+x_train, y_train = sampler.fit_resample(x_train, y_train)
+print(y_train.value_counts())
 
 
 preprocessor = ColumnTransformer(
