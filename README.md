@@ -3,6 +3,11 @@
 # Cheatseat cho toàn bộ học có thể tham khảo:
 - https://stanford.edu/~shervine/teaching/ -> chọn tiếng việt
 
+### Tiếng anh luyện tập:
+- luyện nói miễn phí: https://parroto.app/vi/practice-english-speaking
+- Luyện đề toeic ets miễn phí: https://chamtoeic.edu.vn/tests?collection=890eb9a5-ebf1-43c3-9c4d-492ace3c5097
+- Sử dụng Geimini hoặc AI khác, khi học không hiểu câu đó.
+
 ## Kỹ năng cứng
 
 1. Thuật toán
