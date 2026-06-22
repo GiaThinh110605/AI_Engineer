@@ -4,7 +4,8 @@
 - https://stanford.edu/~shervine/teaching/ -> chọn tiếng việt
 
 ### Tiếng anh luyện tập:
-- luyện nói miễn phí: https://parroto.app/vi/practice-english-speaking
+- Học từ youtube: https://www.youtube.com/@MsThamToeic (note lại những từ đồng nghĩa khi học, không cần nhớ chỉ cần chăm chỉ ghi và đọc)
+- Luyện nói miễn phí: https://parroto.app/vi/practice-english-speaking (tập cách diễn đạt ý tưởng của mình bằng tiếng anh, và nói chuyện với người thật)
 - Luyện đề toeic ets miễn phí: https://chamtoeic.edu.vn/tests?collection=890eb9a5-ebf1-43c3-9c4d-492ace3c5097
 - Sử dụng Geimini hoặc AI khác, khi học không hiểu câu đó.
 
