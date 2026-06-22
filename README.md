@@ -36,6 +36,7 @@
 
 7. Học machine learning
    - [Playlist Machine Learning](https://youtube.com/playlist?list=PL-DKonjOZsHZJ3PCSLE3fE9sFMZ_zWkXO&si=HRfbLNkmB-wwJ8Ys)
+   - [slide ML](https://canva.link/yvby8baw3zsjtg8)
 
 8. Học deep learning
    - [Playlist Deep Learning](https://youtube.com/playlist?list=PL-DKonjOZsHYAnadxsrdwd4VkWKEHf0Pw&si=UAKnww9X4yEw6kIP)
