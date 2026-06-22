@@ -1,0 +1,60 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, recall_score, f1_score, precision_score, classification_report, confusion_matrix
+from sklearn.ensemble import RandomForestClassifier
+import pickle
+
+
+
+df = pd.read_csv("diabetes.csv")
+
+target = "Outcome"
+X = df.drop(target, axis=1) # chỉ ra index: hàng cần xóa, chỉ ra cột: cột cần xóa, axis=0 thì bỏ theo hàng, axis=1 bỏ theo cột
+
+y = df[target] 
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+# random_state giúp cố định bộ train, test qua từng lần chia, để biết được mô hình tốt hơn, tiền xử lý dữ liệu
+# tốt hơn... Nếu không có thì bộ test sẽ không cố định nên không biết cái gì là tốt hơn
+# mô hình liên quan đến cây thì nó không quan tâm đến xử lý số, vì nó chỉ là luật chọn ngưỡng mà phân lớp
+
+scaler = StandardScaler()
+
+# fit dùng để tính mean, std(độ lệch chuẩn)
+# transform để biến đổi data x_new = (x - mean) /std
+X_train = scaler.fit_transform(X_train)
+
+# với bộ test chỉ transform (không được fit bởi vì giống như học sinh đi thi ko được học nữa, chỉ làm bài kiểm tra thoi)
+X_test = scaler.transform(X_test)
+
+params = {
+    "n_estimators": [50, 100, 150],
+    "criterion": ["gini", "entropy", "log_loss"],
+    "max_depth": [None, 2, 4, 10]
+}
+
+model = GridSearchCV(
+    RandomForestClassifier(random_state=42),
+    param_grid=params,
+    cv=6,
+    scoring="f1",
+    verbose=2,
+    n_jobs=3
+)
+# Vì randomForestClassifier sử dụng Bootstrapping(lấy mẫu có hoàn lại) nên việc lấy mẫu ngẫu nhiên
+# nên ta cần sử dụng random_state
+
+model.fit(X_train, y_train)
+
+y_pred = model.predict(X_test)
+print("best score: ", model.best_score_)
+print(model.best_params_)
+print(classification_report(y_test, y_pred))
+
+print(confusion_matrix(y_test, y_pred))
+
+# Save your trained model using a binary write context
+with open('my_model.pkl', 'wb') as file:
+    pickle.dump([model, scaler], file)
