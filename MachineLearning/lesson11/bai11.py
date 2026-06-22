@@ -48,6 +48,7 @@ print(y_train.value_counts())
 
 print(data.info())
 
+# cân bằng giữ liệu những vẫn giữ phân bố
 sampler = SMOTEN(random_state=42, k_neighbors=2, sampling_strategy={
     "bereichsleiter": 1000,
     "specialist": 500,

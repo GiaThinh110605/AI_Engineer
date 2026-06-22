@@ -1,5 +1,8 @@
 # Tất cả cho công việc sau này: internship, engineer
 
+# Cheatseat cho toàn bộ học có thể tham khảo:
+- https://stanford.edu/~shervine/teaching/ -> chọn tiếng việt
+
 ## Kỹ năng cứng
 
 1. Thuật toán

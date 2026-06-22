@@ -11,7 +11,6 @@ https://www.youtube.com/watch?v=PTMX--mheCQ&list=PL-DKonjOZsHZJ3PCSLE3fE9sFMZ_zW
 - Knearest Neighbor(supervised learning):
     - chọn k lẻ để tránh trường hợp có 2 lớp bằng nhau
     - tính khoảng cách giữa các điểm dữ liệu
-    - gán lớp vói khoảng cách nhỏ nhất
     - dự đoán lớp của điểm dữ liệu mới dựa trên lớp của k điểm dữ liệu gần nhất
 
 - Kmean-Clustering(unsupervised learning):
