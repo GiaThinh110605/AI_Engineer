@@ -13,6 +13,8 @@
 
 1. Thuật toán
    - [LeetCode problemset](https://leetcode.com/problemset/)
+   - Python cơ bản: https://www.youtube.com/watch?v=w1NlIsgClLo
+   - ETL pipeline:  https://www.youtube.com/watch?v=XvErOzKgyFE
 
 2. Kỹ năng Clean Code & Design Patterns
    - Tổ chức code dễ đọc, dễ bảo trì
@@ -25,7 +27,7 @@
    - SFT, DPO, RLHF
 
 5. Tiền xử lý dữ liệu với:
-   - `pandas`
+   - `pandas`: https://www.youtube.com/watch?v=yWCBeGDfwWA
    - `numpy`
    - `json`
    - regex
@@ -40,6 +42,7 @@
 
 8. Học deep learning
    - [Playlist Deep Learning](https://youtube.com/playlist?list=PL-DKonjOZsHYAnadxsrdwd4VkWKEHf0Pw&si=UAKnww9X4yEw6kIP)
+   - [slide DL](https://canva.link/6xdb3n1gpijx1kw)
 
 9. Học Docker để đóng gói mô hình và triển khai thực tế
    - [Docker video 1](https://youtu.be/Gh1Sgknc6Fg?si=YtpMSvJV2wPSW4yS)
@@ -51,10 +54,12 @@
    - Đóng gói và triển khai lên Hugging Face Spaces
 
 11. Học FastAPI để xây dựng backend đơn giản và triển khai
-   - [FastAPI playlist](https://www.youtube.com/playlist?list=PLKnIA16_RmvZ41tjbKB2ZnwchfniNsMuQ)
+   - https://fastapi.tiangolo.com/tutorial/
+   - https://www.youtube.com/watch?v=c6pEqxFiRzg
 
 12. Học AWS: các kiến thức cloud quan trọng để tận dụng AI
    - `EC2`, `S3`, `ECS`
+   - https://www.youtube.com/watch?v=_RgU3wj3lBY
 
 13. Ôn tập cơ sở dữ liệu quan hệ
    - PostgreSQL
@@ -68,6 +73,10 @@
 
 16. Học cách sử dụng AI coding tools
    - Claude Code, Codex, GitHub Copilot, ChatGPT, Grok
+   - Vibe code: https://www.youtube.com/watch?v=A9zYjQp3KIA
+
+17. Học RAG:
+  - Langchain cơ bản: https://www.youtube.com/watch?v=tFIzbS7UryI
 
 ## Kỹ năng mềm
 
