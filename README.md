@@ -56,6 +56,7 @@
 11. Học FastAPI để xây dựng backend đơn giản và triển khai
    - https://fastapi.tiangolo.com/tutorial/
    - https://www.youtube.com/watch?v=c6pEqxFiRzg
+   - slide: https://canva.link/840ya322qx6ytve
 
 12. Học AWS: các kiến thức cloud quan trọng để tận dụng AI
    - `EC2`, `S3`, `ECS`
