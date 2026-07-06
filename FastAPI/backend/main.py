@@ -1,10 +1,14 @@
+from pydantic import EmailStr
+from pydantic import HttpUrl
 from typing import Literal
 from pydantic import AfterValidator
 from typing import Annotated
-from fastapi import FastAPI, Query, Path, Body
+from fastapi import FastAPI, Query, Path, Body, Header, Cookie, Response
 from pydantic import BaseModel, Field
+from fastapi.responses import JSONResponse, RedirectResponse
 from enum import Enum
 import random
+from typing import Any
 
 app = FastAPI()
 
@@ -125,19 +129,137 @@ def check_valid_id(id: str):
 # async def read_items(filter_query: Annotated[FilterParams, Query()]):
 #     return filter_query
 
+# class Item(BaseModel):
+#     name: str
+#     description: str | None = None
+#     price: float
+#     tax: float | None = None
+
+# class User(BaseModel):
+#     username: str
+#     full_name: str | None = None
+
+# @app.put("/items/{item_id}")
+# async def update_item(*, q: str | None = None,item_id: int, item: Item, user: User, importance: Annotated[int, Body()]):
+#     results = {"item_id": item_id, "item": item, "user": user}
+#     if q:
+#         results.update({"q": q})
+#     return results
+
+# class Image(BaseModel):
+#     url: HttpUrl
+#     name: str
+
+# class Item(BaseModel):
+#     name: str
+#     description: str | None = None
+#     price: float
+#     tax: float | None = None
+#     tags: set[str] = set()
+#     images: list[Image] | None = None
+
+# class Offer(BaseModel):
+#     name: str
+#     description: str | None = None
+#     price: float
+#     items: list[Item]
+
+# @app.put("/items/{item_id}")
+# async def update_item(offer: Offer):
+#     return offer
+
+
+# class Item(BaseModel):
+#     name: str
+#     description: str | None = None
+#     price: float
+#     tax: float | None = None
+
+#     model_config = {
+#         "json_schema_extra": {
+#             "examples": [
+#                 {
+#                     "name": "Foo",
+#                     "description": "A very nice Item",
+#                     "price": 35.4,
+#                     "tax": 3.2,
+#                 }
+#             ]
+#         }
+#     }
+
+
+# @app.put("/items/{item_id}")
+# async def update_item(item_id: int, item: Item):
+#     results = {"item_id": item_id, "item": item}
+#     return results
+
+# @app.get("/items/")
+# async def read_items(user_agent: Annotated[str | None, Header(convert_underscores=False)] = None):
+#     return {"User-Agent": user_agent}
+
+# class Cookies(BaseModel):
+#     model_config = {"extra": "forbid"}
+#     session_id: str
+#     facebook_tracker: str | None = None
+#     googleall_tracker: str | None = None
+
+# @app.get("/items/")
+# async def read_items(cookies: Annotated[Cookies, Cookie()]):
+#     return cookies
+
+# class CommonHeaders(BaseModel):
+#     model_config = { "extra": "forbid" }
+#     host: str
+#     save_data: bool
+#     if_modified_since: str | None = None
+#     traceparent: str | None = None
+#     x_tag: list[str] = []
+
+# @app.get("/items/")
+# async def read_items(
+#     headers: Annotated[CommonHeaders, Header(convert_underscores=False)]
+# ):
+#     return headers
+
+# Chỉ trả về những cái cần thiết
+class UserIn(BaseModel):
+    user_name: str
+    password: str
+    email: EmailStr
+    full_name: str | None = None
+
+# không trả về password
+class UserOut(BaseModel):
+    username: str
+    email: EmailStr
+    full_name: str | None = None
+
+@app.post("/user/", response_model=UserOut) # không trả về password
+async def create_user(user: UserIn) -> Any:
+    return user
+
+@app.get("/portal", response_model=None) # response_model=None để tắt kiểm tra pydantic
+async def get_portal(teleport: bool = False) -> Response | dict:
+    if teleport:
+        return RedirectResponse(url="https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+    return JSONResponse(content={"message": "Here's your interdimensional portal."})
+
+
 class Item(BaseModel):
     name: str
     description: str | None = None
     price: float
-    tax: float | None = None
+    tax: float = 10.5
+    tags: list[str] = []
 
-class User(BaseModel):
-    username: str
-    full_name: str | None = None
+items = {
+    "foo": {"name": "Foo", "price": 50.2},
+    "bar": {"name": "Bar", "description": "The bartenders", "price": 62, "tax": 20.2},
+    "baz": {"name": "Baz", "description": None, "price": 50.2, "tax": 10.5, "tags": []},
+}
 
-@app.put("/items/{item_id}")
-async def update_item(*, q: str | None = None,item_id: int, item: Item, user: User, importance: Annotated[int, Body()]):
-    results = {"item_id": item_id, "item": item, "user": user}
-    if q:
-        results.update({"q": q})
-    return results
+# response_model_exclude_unset=True: không trả về những cái không được gán giá trị
+@app.get("/items/{item_id}", response_model=Item, response_model_exclude_unset=True) 
+async def read_item(item_id: str):
+    return items[item_id]
