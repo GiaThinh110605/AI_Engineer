@@ -79,6 +79,9 @@
 17. Học RAG:
   - Langchain cơ bản: https://www.youtube.com/watch?v=tFIzbS7UryI
 
+18. Prompt engineering
+  - https://www.youtube.com/watch?v=RiPLeXEwIXE&list=PLyCvV8IiFZXGA0D0dFtVrDJSpguOaxbTM
+
 ## Kỹ năng mềm
 
 ### Thái độ
