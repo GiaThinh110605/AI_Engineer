@@ -1,9 +1,11 @@
+from fastapi import status
+from numpy import full
 from pydantic import EmailStr
 from pydantic import HttpUrl
 from typing import Literal
 from pydantic import AfterValidator
 from typing import Annotated
-from fastapi import FastAPI, Query, Path, Body, Header, Cookie, Response
+from fastapi import FastAPI, Query, Path, Body, Header, Cookie, Response, Form
 from pydantic import BaseModel, Field
 from fastapi.responses import JSONResponse, RedirectResponse
 from enum import Enum
@@ -223,43 +225,104 @@ def check_valid_id(id: str):
 #     return headers
 
 # Chỉ trả về những cái cần thiết
-class UserIn(BaseModel):
-    user_name: str
-    password: str
-    email: EmailStr
-    full_name: str | None = None
+# class UserIn(BaseModel):
+#     user_name: str
+#     password: str
+#     email: EmailStr
+#     full_name: str | None = None
 
-# không trả về password
-class UserOut(BaseModel):
+# # không trả về password
+# class UserOut(BaseModel):
+#     username: str
+#     email: EmailStr
+#     full_name: str | None = None
+
+# @app.post("/user/", response_model=UserOut) # không trả về password
+# async def create_user(user: UserIn) -> Any:
+#     return user
+
+# @app.get("/portal", response_model=None) # response_model=None để tắt kiểm tra pydantic
+# async def get_portal(teleport: bool = False) -> Response | dict:
+#     if teleport:
+#         return RedirectResponse(url="https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+#     return JSONResponse(content={"message": "Here's your interdimensional portal."})
+
+
+# class Item(BaseModel):
+#     name: str
+#     description: str | None = None
+#     price: float
+#     tax: float = 10.5
+#     tags: list[str] = []
+
+# items = {
+#     "foo": {"name": "Foo", "price": 50.2},
+#     "bar": {"name": "Bar", "description": "The bartenders", "price": 62, "tax": 20.2},
+#     "baz": {"name": "Baz", "description": None, "price": 50.2, "tax": 10.5, "tags": []},
+# }
+
+# # response_model_exclude_unset=True: không trả về những cái không được gán giá trị
+# @app.get("/items/{item_id}", response_model=Item, response_model_exclude_unset=True) 
+# async def read_item(item_id: str):
+#     return items[item_id]
+
+# class UserBase(BaseModel):
+#     username: str
+#     email: EmailStr
+#     full_name: str | None = None
+
+# class UserIn(UserBase):
+#     password: str
+
+# class UserOut(UserBase):
+#     pass
+
+# class UserInDB(UserBase):
+#     hashed_password: str
+
+# def fake_password_hasher(raw_password: str):
+#     return "supersecret" + raw_password
+
+# def fake_save_user(user_in: UserIn):
+#     hashed_password = fake_password_hasher(user_in.password)
+#     user_in_db = UserInDB(
+#         **user_in.model_dump(),
+#         hashed_password=hashed_password
+#     )
+#     print(user_in_db)
+#     return user_in_db
+
+# @app.post("/user/", response_model=UserOut)
+# async def create_user(user_in: UserIn):
+#     user_saved = fake_save_user(user_in)
+#     return user_saved
+
+# class Item(BaseModel):
+#     name: str
+#     description: str
+
+# items = [
+#     {"name": "Foo", "description": "There comes my hero"},
+#     {"name": "Red", "description": "It's my aeroplane"}
+# ]
+
+# @app.get("/items/", response_model=list[Item])
+# async def read_items():
+#     return items
+
+# @app.get("/keyword-weights/", response_model=dict[str, float])
+# async def read_keyword_weights():
+#     return {"foo": 2.3, "bar": 3.4}
+
+# @app.post("/items/", status_code=status.HTTP_201_CREATED)
+# async def create_item(name: str):
+#     return {"name": name}
+
+class FormData(BaseModel):
     username: str
-    email: EmailStr
-    full_name: str | None = None
+    password: str
+    model_config = {"extra": "forbid"}
 
-@app.post("/user/", response_model=UserOut) # không trả về password
-async def create_user(user: UserIn) -> Any:
-    return user
-
-@app.get("/portal", response_model=None) # response_model=None để tắt kiểm tra pydantic
-async def get_portal(teleport: bool = False) -> Response | dict:
-    if teleport:
-        return RedirectResponse(url="https://www.youtube.com/watch?v=dQw4w9WgXcQ")
-    return JSONResponse(content={"message": "Here's your interdimensional portal."})
-
-
-class Item(BaseModel):
-    name: str
-    description: str | None = None
-    price: float
-    tax: float = 10.5
-    tags: list[str] = []
-
-items = {
-    "foo": {"name": "Foo", "price": 50.2},
-    "bar": {"name": "Bar", "description": "The bartenders", "price": 62, "tax": 20.2},
-    "baz": {"name": "Baz", "description": None, "price": 50.2, "tax": 10.5, "tags": []},
-}
-
-# response_model_exclude_unset=True: không trả về những cái không được gán giá trị
-@app.get("/items/{item_id}", response_model=Item, response_model_exclude_unset=True) 
-async def read_item(item_id: str):
-    return items[item_id]
+@app.post("/login/")
+async def login(data: Annotated[FormData, Form()]):
+    return data
