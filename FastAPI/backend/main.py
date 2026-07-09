@@ -1,3 +1,13 @@
+from fastapi import responses
+from fastapi import Depends
+from fastapi.encoders import jsonable_encoder
+from datetime import datetime
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import PlainTextResponse
+from fastapi import Request
+from fastapi import HTTPException
+from fastapi.responses import HTMLResponse
+from fastapi import UploadFile
 from fastapi import status
 from numpy import full
 from pydantic import EmailStr
@@ -5,12 +15,14 @@ from pydantic import HttpUrl
 from typing import Literal
 from pydantic import AfterValidator
 from typing import Annotated
-from fastapi import FastAPI, Query, Path, Body, Header, Cookie, Response, Form
+from fastapi import FastAPI, Query, Path, Body, Header, Cookie, Response, Form, File
 from pydantic import BaseModel, Field
 from fastapi.responses import JSONResponse, RedirectResponse
 from enum import Enum
 import random
 from typing import Any
+from fastapi.responses import HTMLResponse
+from starlette.exceptions import HTTPException as StarletteHTTPException
 
 app = FastAPI()
 
@@ -318,11 +330,256 @@ def check_valid_id(id: str):
 # async def create_item(name: str):
 #     return {"name": name}
 
-class FormData(BaseModel):
-    username: str
-    password: str
-    model_config = {"extra": "forbid"}
+# class FormData(BaseModel):
+#     username: str
+#     password: str
+#     model_config = {"extra": "forbid"}
 
-@app.post("/login/")
-async def login(data: Annotated[FormData, Form()]):
-    return data
+# @app.post("/login/")
+# async def login(data: Annotated[FormData, Form()]):
+#     return data
+
+# # file lưu ở ram (bộ nhớ tạm)
+# @app.post("/files/")
+# async def create_file(file: Annotated[bytes, File(description="A file read as bytes")]):
+#     return {"file_size": len(file)}
+
+# # file nhẹ thì lưu ở ram (bộ nhớ tạm), file nặng thì lưu ở disk (ổ cứng)
+# @app.post("/uploadfile/")
+# async def create_upload_file(file: Annotated[UploadFile, File(description="kkk")]):
+#     return {"filename": file.filename}
+
+# @app.post("/files/")
+# async def create_files(files: Annotated[list[bytes], File()]):
+#     return {"file_sizes": [len(file) for file in files]}
+
+
+# @app.post("/uploadfiles/")
+# async def create_upload_files(files: list[UploadFile]):
+#     return {"filenames": [file.filename for file in files]}
+
+
+# @app.get("/")
+# async def main():
+#     content = """
+# <body>
+# <form action="/files/" enctype="multipart/form-data" method="post">
+# <input name="files" type="file" multiple>
+# <input type="submit">
+# </form>
+# <form action="/uploadfiles/" enctype="multipart/form-data" method="post">
+# <input name="files" type="file" multiple>
+# <input type="submit">
+# </form>
+# </body>
+#     """
+#     return HTMLResponse(content=content)
+
+# @app.post("/files/")
+# async def create_file(
+#     file: Annotated[bytes, File()],
+#     fileb: Annotated[UploadFile, File()],
+#     token: Annotated[str, Form()]
+# ):
+#     return {
+#         "file_size": len(file),
+#         "token": token,
+#         "fileb": fileb.content_type
+#     }
+
+# items = {"Gia Thinh": "He is very handsome"}
+
+# @app.get("/items/{item_id}")
+# async def read_item(item_id: str):
+#     if item_id not in items:
+# #         raise HTTPException(
+# #             status_code=404, 
+# #             detail="Item not found",
+# #             headers={"X-Error": "kkk"}
+# #         )
+# #     return {"item": items[item_id]}
+
+# class UnicornException(Exception):
+#     def __init__(self, name: str):
+#         self.name = name
+
+# @app.exception_handler(UnicornException)
+# async def unicorn_exception_handler(request: Request, exc: UnicornException):
+#     return JSONResponse(
+#         status_code=418,
+#         content={"message": f"Oops! {exc.name} did something. There goes a rainbow..."},
+#     )
+
+# @app.get("/unicorns/{name}")
+# async def read_unicorn(name: str):
+#     if name == "yolo":
+#         raise UnicornException(name=name)
+#     return {"unicorn_name": name}
+
+# # xử lý http chuẩn (như 404, 401, 500)
+# @app.exception_handler(StarletteHTTPException)
+# async def http_exception_handler(request, exc):
+#     return PlainTextResponse(str(exc.detail), status_code=exc.status_code)
+
+# # xử lý lỗi dữ liệu đầu vào
+# @app.exception_handler(RequestValidationError)
+# async def validation_exception_handler(request, exc: RequestValidationError):
+#     message = "Validation Error:"
+#     for error in exc.errors():
+#         message += f"\nField: {error['loc']}, Error: {error['msg']}"
+#     return PlainTextResponse(message, status_code=400)
+
+# @app.get("/items/{item_id}")
+# async def read_item(item_id: int):
+#     if item_id == 3:
+#         raise HTTPException(status_code=418, detail="Nope! I don't like 3")
+#     return {"item_id": item_id}
+
+# fake_db = {}
+
+# class Item(BaseModel):
+#     title: str
+#     timestamp: datetime
+#     description: str | None = None
+
+# @app.put("/items/{id}")
+# def update_item(id: str, item: Item):
+#     js = jsonable_encoder(item)
+#     fake_db[id] = js
+
+# @app.get("/items/")
+# def get_items():
+#     return fake_db
+
+# class Item(BaseModel):
+#     name: str | None = None
+#     description: str | None = None
+#     price: float | None = None
+#     tax: float = 10.5
+#     tags: list[str] = []
+
+
+# items = {
+#     "foo": {"name": "Foo", "price": 50.2},
+#     "bar": {"name": "Bar", "description": "The bartenders", "price": 62, "tax": 20.2},
+#     "baz": {"name": "Baz", "description": None, "price": 50.2, "tax": 10.5, "tags": []},
+# }
+
+
+# @app.get("/items/{item_id}", response_model=Item)
+# async def read_item(item_id: str):
+#     return items[item_id]
+
+
+# @app.put("/items/{item_id}", response_model=Item)
+# async def update_item(item_id: str, item: Item):
+#     print(item)
+#     update_item_encoded = jsonable_encoder(item)
+#     print(update_item_encoded)
+#     items[item_id] = update_item_encoded
+#     return update_item_encoded
+
+# class Item(BaseModel):
+#     name: str | None = None
+#     description: str | None = None
+#     price: float | None = None
+#     tax: float = 10.5
+#     tags: list[str] = []
+
+
+# items = {
+#     "foo": {"name": "Foo", "price": 50.2},
+#     "bar": {"name": "Bar", "description": "The bartenders", "price": 62, "tax": 20.2},
+#     "baz": {"name": "Baz", "description": None, "price": 50.2, "tax": 10.5, "tags": []},
+# }
+
+
+# @app.get("/items/{item_id}", response_model=Item)
+# async def read_item(item_id: str):
+#     return items[item_id]
+
+
+# @app.patch("/items/{item_id}")
+# async def update_item(item_id: str, item: Item) -> Item:
+#     stored_item_data = items[item_id]
+#     stored_item_model = Item(**stored_item_data)
+#     update_data = item.model_dump(exclude_unset=True)
+#     updated_item = stored_item_model.model_copy(update=update_data)
+#     items[item_id] = jsonable_encoder(updated_item)
+#     return updated_item
+
+
+
+# fluffy = Cat(name="Mr Fluffy")
+# print(fluffy.name)
+
+# dependency: là callable (có thể gọi được)
+# (something) hoặc () -> python chạy không lỗi là callable
+# class Cat:
+#     def __init__(self, name: str):
+#         self.name = name
+# fake_items_db = [{"item_name": "Foo"}, {"item_name": "Bar"}, {"item_name": "Baz"}]
+
+# class CommonQueryParams:
+#     def __init__(self, q: str | None = None, skip: int = 0, limit: int = 100):
+#         self.q = q
+#         self.skip = skip
+#         self.limit = limit
+    
+# @app.get("/items/")
+# async def read_items(commons: Annotated[CommonQueryParams, Depends()]):
+#     responses = {}
+#     if commons.q:
+#         responses.update({"q": commons.q})
+#     items = fake_items_db[commons.skip : commons.skip + commons.limit]
+#     responses.update({"items": items})
+#     return responses
+
+# async def verify_token(x_token: Annotated[str, Header()]):
+#     if x_token != "fake-super-secret-token":
+#         raise HTTPException(status_code=400, detail="X-Token header invalid")
+
+
+# async def verify_key(x_key: Annotated[str, Header()]):
+#     if x_key != "fake-super-secret-key":
+#         raise HTTPException(status_code=400, detail="X-Key header invalid")
+#     return x_key
+
+
+# @app.get("/items/", dependencies=[Depends(verify_token), Depends(verify_key)])
+# async def read_items():
+#     return [{"item": "Foo"}, {"item": "Bar"}]
+
+# class InternalError(Exception):
+#     pass
+
+
+# def get_username():
+#     try:
+#         yield "Rick"
+#     except InternalError:
+#         print("Oops, we didn't raise again, Britney 😱")
+#         raise
+
+
+# @app.get("/items/{item_id}")
+# def get_item(item_id: str, username: Annotated[str, Depends(get_username)]):
+#     if item_id == "portal-gun":
+#         raise InternalError(
+#             f"The portal gun is too dangerous to be owned by {username}"
+#         )
+#     if item_id != "plumbus":
+#         raise HTTPException(
+#             status_code=404, detail="Item not found, there's only a plumbus here"
+#         )
+#     return item_id
+
+def get_username():
+    try:
+        yield "Rick"
+    finally:
+        print("Clean up before response is sent")
+
+@app.get("/users/me")
+def get_user_me(username: Annotated[str, Depends(get_username, scope='function')]):
+    return username
