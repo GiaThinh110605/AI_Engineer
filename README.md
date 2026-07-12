@@ -52,6 +52,9 @@
    - Làm chủ thư viện `transformers` và `datasets`
    - Fine-tuning với `PEFT`, `LoRA` / `QLoRA`
    - Đóng gói và triển khai lên Hugging Face Spaces
+   - https://www.youtube.com/watch?v=DVouDUMNFDY
+   - https://www.youtube.com/watch?v=R8h_gpSpEVU&t=24592s
+
 
 11. Học FastAPI để xây dựng backend đơn giản và triển khai
    - https://fastapi.tiangolo.com/tutorial/
