@@ -34,6 +34,8 @@ import jwt
 from jwt.exceptions import InvalidTokenError
 import time
 from fastapi.middleware.cors import CORSMiddleware
+from sqlmodel import Field, Session, SQLModel, create_engine, select
+
 
 app = FastAPI()
 
@@ -784,21 +786,116 @@ def check_valid_id(id: str):
 #     response.headers["X-Process-Time"] = str(process_time)
 #     return response
     
-origins = [
-    "http://localhost.tiangolo.com",
-    "https://localhost.tiangolo.com",
-    "http://localhost",
-    "http://localhost:8080",
-]
+# origins = [
+#     "http://localhost.tiangolo.com",
+#     "https://localhost.tiangolo.com",
+#     "http://localhost",
+#     "http://localhost:8080",
+# ]
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["POST"],
-    allow_headers=["Content-Type"],
-)
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=origins,
+#     allow_credentials=True,
+#     allow_methods=["POST"],
+#     allow_headers=["Content-Type"],
+# )
 
-@app.get("/")
-async def main():
-    return {"message": "Hello World"}
+# @app.get("/")
+# async def main():
+#     return {"message": "Hello World"}
+
+
+# Để đảm bảo việc bảo mật
+# việc không cho tạo id
+# chỉ trả về những thông tin cần thiết -> để tránh lộ thông tin nhạy cảm
+class HeroBase(SQLModel):
+    name: str = Field(index=True)
+    age: int | None = Field(default=None, index=True)
+
+class Hero(HeroBase, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    secret_name: str
+
+class HeroPubic(HeroBase):
+    id: int
+
+class HeroCreate(HeroBase):
+    secret_name: str
+
+class HeroUpdate(HeroBase):
+    name: str | None = None
+    age: int | None = None
+    secret_name: str | None = None
+    
+# index: là chỉ mục, nó sắp xếp tăng dần hoặc giảm dần để truy vấn nhanh hơn
+# sử dụng cấu trúc B-tree để truy vấn nhanh
+
+# thread(luồng): là 1 request của người dùng để fastapi xử lý
+# nhiều người dùng -> nhiều luồng -> xử lý song song
+sqlite_file_name = "database.db"
+sqlite_url = f"sqlite:///{sqlite_file_name}"
+
+# Cần tạo 1 engine để kết nối database
+connect_args = {"check_same_thread": False}
+engine = create_engine(sqlite_url, connect_args=connect_args)
+
+def create_db_and_tables():
+    SQLModel.metadata.create_all(engine)
+
+def get_session():
+    with Session(engine) as session:
+        yield session
+
+SessionDep = Annotated[Session, Depends(get_session)]
+
+@app.on_event("startup")
+def on_startup():
+    create_db_and_tables()
+
+@app.post("/heroes/")
+def create_hero(hero: HeroCreate, session: SessionDep) -> Hero:
+    db_hero = Hero.model_validate(hero)
+    session.add(db_hero)
+    session.commit()
+    session.refresh(db_hero)
+    return db_hero
+
+@app.get("/heroes/", response_model=list[HeroPubic])
+def read_heroes(
+    session: SessionDep,
+    offset: int = 0,
+    limit: Annotated[int, Query(le=100)] = 100,
+) -> list[HeroPubic]:
+    heroes = session.exec(select(Hero).offset(offset).limit(limit)).all()
+    return heroes
+
+@app.get("/heroes/{hero_id}", response_model=HeroPubic)
+def read_hero(hero_id: int, session: SessionDep) -> HeroPubic:
+    hero = session.get(Hero, hero_id)
+    if not hero:
+        raise HTTPException(status_code=404, detail="Hero not found")
+    return hero
+
+@app.delete("/heroes/{hero_id}")
+def delete_hero(hero_id: int, session: SessionDep):
+    hero = session.get(Hero, hero_id)
+    if not hero:
+        raise HTTPException(status_code=404, detail="Hero not found")
+    session.delete(hero)
+    session.commit()
+    return {"ok": True}
+
+@app.patch("/heroes/{hero_id}", response_model=HeroPubic)
+def update_hero(hero_id: int, hero: HeroUpdate, session: SessionDep) -> HeroPubic:
+    hero_db = session.get(Hero, hero_id)
+    if not hero_db:
+        raise HTTPException(status_code=404, detail="Hero not found")
+    print(hero)
+    hero_data = hero.model_dump(exclude_unset=True)
+    print(hero_data)
+    hero_db.sqlmodel_update(hero_data)
+    session.add(hero_db)
+    session.commit()
+    session.refresh(hero_db)
+    return hero_db
